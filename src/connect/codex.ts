@@ -54,7 +54,7 @@ const codex: Tool = {
     return mergeConfig(existing, "mcp_servers", gen.mcp_servers as Record<string, unknown>);
   },
 
-  summary(contextdPath: string): string {
+  summary(_contextdPath: string): string {
     return `Adds contextd to mcp_servers`;
   }
 };
