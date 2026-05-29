@@ -93,7 +93,6 @@ export function activate(context: vscode.ExtensionContext): void {
             try {
               const content = fs.readFileSync(cfgPath, "utf-8");
               if (isToml) {
-                // @ts-expect-error - missing types for @iarna/toml
                 const TOML = await import("@iarna/toml");
                 existing = TOML.parse(content) as Record<string, unknown>;
               } else {
@@ -106,9 +105,8 @@ export function activate(context: vscode.ExtensionContext): void {
             const merged = s.tool.merge(existing, contextdPath);
             
             if (isToml) {
-              // @ts-expect-error - missing types for @iarna/toml
               const TOML = await import("@iarna/toml");
-              fs.writeFileSync(cfgPath, TOML.stringify(merged as Record<string, unknown>));
+              fs.writeFileSync(cfgPath, TOML.stringify(merged as import("@iarna/toml").JsonMap));
             } else {
               fs.writeFileSync(cfgPath, JSON.stringify(merged, null, 2));
             }
