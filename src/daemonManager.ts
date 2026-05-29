@@ -121,7 +121,7 @@ export class DaemonManager extends EventEmitter {
     return new Promise<boolean>((resolve) => {
       try {
         const child = cp.spawn(binaryPath, ["daemon"], {
-          stdio: ["ignore", "pipe", "pipe"],
+          stdio: ["pipe", "pipe", "pipe"],
           detached: false,
         });
 

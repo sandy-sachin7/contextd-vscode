@@ -5,7 +5,7 @@ import { registerQuickSearch } from "./quickSearch";
 import { createWebviewPanel } from "./webviewPanel";
 import { TreeDataProvider } from "./treeDataProvider";
 import { loadConfig } from "./config";
-import { TOOLS } from "./connect/tool";
+import { TOOLS } from "./connect/index";
 
 export function activate(context: vscode.ExtensionContext): void {
   const config = loadConfig();
@@ -88,15 +88,31 @@ export function activate(context: vscode.ExtensionContext): void {
             const fs = await import("fs");
             fs.mkdirSync(dir, { recursive: true });
 
+            const isToml = cfgPath.endsWith(".toml");
             let existing: Record<string, unknown> = {};
             try {
-              existing = JSON.parse(fs.readFileSync(cfgPath, "utf-8"));
+              const content = fs.readFileSync(cfgPath, "utf-8");
+              if (isToml) {
+                // @ts-ignore
+                const TOML = await import("@iarna/toml");
+                existing = TOML.parse(content) as Record<string, unknown>;
+              } else {
+                existing = JSON.parse(content);
+              }
             } catch {
-              // file doesn't exist or invalid JSON — start fresh
+              // file doesn't exist or invalid JSON/TOML — start fresh
             }
 
             const merged = s.tool.merge(existing, contextdPath);
-            fs.writeFileSync(cfgPath, JSON.stringify(merged, null, 2));
+            
+            if (isToml) {
+              // @ts-ignore
+              const TOML = await import("@iarna/toml");
+              fs.writeFileSync(cfgPath, TOML.stringify(merged as any));
+            } else {
+              fs.writeFileSync(cfgPath, JSON.stringify(merged, null, 2));
+            }
+            
             configured++;
           } catch (err) {
             const msg = err instanceof Error ? err.message : String(err);
