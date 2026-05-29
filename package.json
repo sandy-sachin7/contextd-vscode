@@ -124,6 +124,7 @@
     }
   },
   "scripts": {
+    "vscode:prepublish": "npm run compile",
     "compile": "tsc -p ./",
     "lint": "eslint 'src/**/*.ts'",
     "check-types": "tsc --noEmit",
