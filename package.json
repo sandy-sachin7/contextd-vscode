@@ -1,0 +1,146 @@
+{
+  "name": "contextd-vscode",
+  "displayName": "contextd",
+  "description": "Local-first semantic code search for AI agents",
+  "version": "0.1.0",
+  "publisher": "sandy-sachin7",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sandy-sachin7/contextd-vscode"
+  },
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Programming Languages",
+    "Other"
+  ],
+  "activationEvents": [
+    "onCommand:contextd.search",
+    "onCommand:contextd.searchPanel",
+    "onCommand:contextd.status",
+    "onCommand:contextd.toggle",
+    "onCommand:contextd.connect",
+    "onCommand:contextd.reindex",
+    "onView:contextdIndexedFiles"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "contextd.search",
+        "title": "contextd: Semantic Search"
+      },
+      {
+        "command": "contextd.searchPanel",
+        "title": "contextd: Open Search Panel"
+      },
+      {
+        "command": "contextd.status",
+        "title": "contextd: Show Daemon Status"
+      },
+      {
+        "command": "contextd.toggle",
+        "title": "contextd: Toggle Daemon"
+      },
+      {
+        "command": "contextd.connect",
+        "title": "contextd: Configure MCP for AI Tools"
+      },
+      {
+        "command": "contextd.reindex",
+        "title": "contextd: Re-index Workspace"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "contextd.search",
+        "key": "ctrl+shift+f",
+        "mac": "cmd+shift+f"
+      },
+      {
+        "command": "contextd.searchPanel",
+        "key": "ctrl+shift+alt+f",
+        "mac": "cmd+shift+alt+f"
+      }
+    ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "contextd-explorer",
+          "title": "contextd",
+          "icon": "$(symbol-method)"
+        }
+      ]
+    },
+    "views": {
+      "contextd-explorer": [
+        {
+          "type": "tree",
+          "id": "contextdIndexedFiles",
+          "name": "Indexed Files"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "contextd",
+      "properties": {
+        "contextd.host": {
+          "type": "string",
+          "default": "127.0.0.1",
+          "description": "contextd REST API host"
+        },
+        "contextd.port": {
+          "type": "integer",
+          "default": 3030,
+          "description": "contextd REST API port"
+        },
+        "contextd.binaryPath": {
+          "type": "string",
+          "default": "",
+          "description": "Path to contextd binary (leave empty for PATH lookup)"
+        },
+        "contextd.searchLimit": {
+          "type": "integer",
+          "default": 10,
+          "minimum": 1,
+          "maximum": 100,
+          "description": "Default number of search results"
+        },
+        "contextd.minScore": {
+          "type": "number",
+          "default": 0.3,
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Minimum similarity score (0-1)"
+        },
+        "contextd.autoStartDaemon": {
+          "type": "boolean",
+          "default": true,
+          "description": "Auto-start contextd daemon on workspace open"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "compile": "tsc -p ./",
+    "lint": "eslint 'src/**/*.ts'",
+    "check-types": "tsc --noEmit",
+    "test": "vitest run",
+    "test:integration": "vitest run --config vitest.integration.config.ts",
+    "package": "vsce package",
+    "publish": "vsce publish"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/vscode": "^1.85.0",
+    "@vscode/test-electron": "^2.4.0",
+    "eslint": "^9.0.0",
+    "@eslint/js": "^9.0.0",
+    "typescript-eslint": "^8.0.0",
+    "typescript": "^5.3.0",
+    "vitest": "^2.0.0",
+    "vsce": "^2.15.0"
+  }
+}
