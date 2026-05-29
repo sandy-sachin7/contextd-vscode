@@ -1,5 +1,5 @@
 {
-  "name": "contextd",
+  "name": "contextd-semantic-search",
   "displayName": "contextd",
   "description": "Local-first semantic code search for AI agents",
   "version": "0.1.0",
